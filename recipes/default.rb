@@ -16,3 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+include_recipe "cloudfoundry-cloud_controller::database"
+include_recipe "cloudfoundry-cloud_controller::server"
