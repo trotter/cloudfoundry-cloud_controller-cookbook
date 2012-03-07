@@ -2,6 +2,7 @@ include_recipe "cloudfoundry-common"
 
 # Needed because the CloudController Gemfile depends on mysql
 include_recipe "mysql::client"
+include_recipe "bluepill"
 include_recipe "cloudfoundry-common::directories"
 include_recipe "cloudfoundry-common::vcap"
 
