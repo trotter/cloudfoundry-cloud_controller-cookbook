@@ -45,19 +45,6 @@ template config_file do
   mode   '0644'
 end
 
-template File.join(node[:bluepill][:conf_dir], "cloud_controller.pill") do
-  source "cloud_controller.pill.erb"
-  variables(
-    :binary      => "#{File.join(ruby_path, "ruby")} #{cloud_controller_path}",
-    :pid_file    => node[:cloudfoundry_cloud_controller][:server][:pid_file],
-    :config_file => config_file
-  )
-end
-
-bluepill_service "cloud_controller" do
-  action [:enable, :load, :start]
-end
-
 # Write config files for each framework so that cloud_controller can
 # detect what kind of application it's dealing with.
 if !node[:cloudfoundry_cloud_controller][:server][:frameworks] ||
@@ -76,4 +63,17 @@ else
       )
     end
   end
+end
+
+template File.join(node[:bluepill][:conf_dir], "cloud_controller.pill") do
+  source "cloud_controller.pill.erb"
+  variables(
+    :binary      => "#{File.join(ruby_path, "ruby")} #{cloud_controller_path}",
+    :pid_file    => node[:cloudfoundry_cloud_controller][:server][:pid_file],
+    :config_file => config_file
+  )
+end
+
+bluepill_service "cloud_controller" do
+  action [:enable, :load, :start]
 end
