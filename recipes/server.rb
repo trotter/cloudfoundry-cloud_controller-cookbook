@@ -60,15 +60,20 @@ end
 
 # Write config files for each framework so that cloud_controller can
 # detect what kind of application it's dealing with.
-if !node[:cloudfoundry_cloud_controller][:frameworks] || 
-    node[:cloudfoundry_cloud_controller][:frameworks].empty?
+if !node[:cloudfoundry_cloud_controller][:server][:frameworks] ||
+    node[:cloudfoundry_cloud_controller][:server][:frameworks].empty?
   Chef::Log.info "No frameworks specified, skipping framework configs."
 else
-  node[:cloudfoundry_cloud_controller][:frameworks].each do |framework|
-    template File.join(node[:cloudfoundry_cloud_controller][:staging_dir], "#{framework}.yml") do
+  node[:cloudfoundry_cloud_controller][:server][:frameworks].each do |framework|
+    template File.join(node[:cloudfoundry_common][:staging_manifests_dir], "#{framework}.yml") do
       source "#{framework}.yml.erb"
       owner  node[:cloudfoundry_common][:user]
       mode   "0644"
+      variables(
+        # ruby outputs the version without the '-'
+        :ruby_1_9_2_version => node[:cloudfoundry_common][:ruby_1_9_2_version].sub('-', ''),
+        :ruby_1_9_2_path => ruby_path(node[:cloudfoundry_common][:ruby_1_9_2_version])
+      )
     end
   end
 end

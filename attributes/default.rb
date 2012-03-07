@@ -32,9 +32,12 @@ default['cloudfoundry_cloud_controller']['server']['runtimes'] = [
   { :name => "ruby19", :version => node[:cloudfoundry_common][:ruby_1_9_2_version] }
 ]
 
+# Due to a bug in cloud_controller, you _must_ have rails3 and sinatra
+# listed as frameworks.
 default['cloudfoundry_cloud_controller']['server']['frameworks'] = [
   'platform',
-  'rails3'
+  'rails3',
+  'sinatra'
 ]
 
 default[:cloudfoundry_cloud_controller]['server']['pid_file'] = File.join(node[:cloudfoundry_common][:pid_dir], "cloud_controller.pid")

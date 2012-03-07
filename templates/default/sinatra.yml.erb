@@ -1,5 +1,5 @@
 ---
-name: "rails3"
+name: "sinatra"
 runtimes:
   - "ruby19":
       version: "<%= @ruby_1_9_2_version %>"
@@ -12,13 +12,15 @@ runtimes:
 app_servers:
   - "thin":
       description: "Thin"
-      executable: false
+      executable: false # determined during staging
       default: true
 detection:
-  - "config/application.rb": true
-  - "config/environment.rb": true
+  - "*.rb": "require 'sinatra'|require \"sinatra\"" # .rb files in the root dir containing a require?
+  - "config/environment.rb": false # and config/environment.rb must not exist
 staged_services:
   - "name": "mysql"
     "version": "*"
   - "name": "postgresql"
     "version": "*"
+  - "name": "redis"
+    "version": "2"
