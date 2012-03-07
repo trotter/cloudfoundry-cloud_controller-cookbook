@@ -25,9 +25,17 @@ package "libsqlite3-dev"
 bash "install cloudfoundry_gems" do
   user node[:cloudfoundry_common][:user]
   cwd  File.join(node[:cloudfoundry_common][:vcap][:install_path], "cloud_controller")
-  code "#{File.join(ruby_path, "bundle")} install"
-  subscribes :sync, resources(:git => node[:cloudfoundry_common][:vcap][:install_path])
-#  action :nothing
+  code "#{File.join(ruby_path, "bundle")} install --without=test --local"
+  subscribes :run, resources(:git => node[:cloudfoundry_common][:vcap][:install_path])
+  action :nothing
+end
+
+bash "run cloudfoundry migrations" do
+  user node[:cloudfoundry_common][:user]
+  cwd  File.join(node[:cloudfoundry_common][:vcap][:install_path], "cloud_controller")
+  code "PATH='#{ruby_path}:$PATH' #{File.join(ruby_path, "bundle")} exec rake db:migrate RAILS_ENV=production CLOUD_CONTROLLER_CONFIG='#{config_file}'"
+  subscribes :run, resources(:git => node[:cloudfoundry_common][:vcap][:install_path])
+  action :nothing
 end
 
 template config_file do
