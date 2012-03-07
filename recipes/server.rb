@@ -53,7 +53,6 @@ template File.join(node[:bluepill][:conf_dir], "cloud_controller.pill") do
   )
 end
 
-# TODO (trotter): Add bluepill service
 bluepill_service "cloud_controller" do
   action [:enable, :load, :start]
 end
