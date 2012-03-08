@@ -6,6 +6,10 @@ include_recipe "bluepill"
 include_recipe "cloudfoundry-common::directories"
 include_recipe "cloudfoundry-common::vcap"
 
+# CloudController must unzip incoming files
+package "unzip"
+package "zip"
+
 ruby_path = File.join(rbenv_root, "versions", node.cloudfoundry_common.ruby_1_9_2_version, "bin")
 cloud_controller_path = File.join(node[:cloudfoundry_common][:vcap][:install_path], "bin", "cloud_controller")
 config_file = File.join(node[:cloudfoundry_common][:config_dir], "cloud_controller.yml")
