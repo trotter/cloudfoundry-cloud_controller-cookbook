@@ -50,3 +50,36 @@ Attributes
 Usage
 =====
 
+This cookbook contains two components, `cloud_controller::server` and
+`cloud_controller::database`. The default recipe runs both recipes.
+
+`cloud_controller::database` is responsible for installing postgres and
+setting up a database with the proper permissions. To use it on a
+database node:
+
+    include_recipe "cloud_controller::database"
+
+`cloud_controller::server` will install a CloudController on the target
+node along with the necessary configuration files and init scripts to
+run it. To use it within your recipes:
+
+    include_recipe "cloud_controller::server"
+
+License and Author
+==================
+
+Author:: Trotter Cashion (<cashion@gmail.com>)
+
+Copyright:: 2012 Trotter Cashion
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
