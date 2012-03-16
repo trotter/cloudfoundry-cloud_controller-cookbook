@@ -95,6 +95,10 @@ default_account_capacity:
 
 # Services we provide, and their tokens. Avoids bootstrapping DB.
 builtin_services:
+<% node[:cloudfoundry_cloud_controller][:server][:services].each do |service| %>
+  <%= service %>:
+    token: <%= node[:cloudfoundry_common][:service_token] %>
+<% end %>
 
 # Enable/disable starting apps in debug modes.
 allow_debug: <%= node[:cloudfoundry_cloud_controller][:server][:allow_debug] %>
