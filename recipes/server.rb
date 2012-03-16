@@ -1,22 +1,13 @@
-include_recipe "cloudfoundry-common"
+ruby_path    = File.join(rbenv_root, "versions", node.cloudfoundry_common.ruby_1_9_2_version, "bin")
+config_file  = File.join(node.cloudfoundry_common.config_dir, "cloud_controller.yml")
+
 
 # Needed because the CloudController Gemfile depends on mysql
 include_recipe "mysql::client"
-include_recipe "bluepill"
-include_recipe "cloudfoundry-common::directories"
-include_recipe "cloudfoundry-common::vcap"
 
 # CloudController must unzip incoming files
 package "unzip"
 package "zip"
-
-ruby_path = File.join(rbenv_root, "versions", node.cloudfoundry_common.ruby_1_9_2_version, "bin")
-cloud_controller_path = File.join(node[:cloudfoundry_common][:vcap][:install_path], "bin", "cloud_controller")
-config_file = File.join(node[:cloudfoundry_common][:config_dir], "cloud_controller.yml")
-
-rbenv_gem "bundler" do
-  ruby_version node.cloudfoundry_common.ruby_1_9_2_version
-end
 
 # For the nokogiri dependency
 package "libxml2"
@@ -27,12 +18,8 @@ package "libxslt1-dev"
 package "sqlite3"
 package "libsqlite3-dev"
 
-bash "install cloudfoundry_gems" do
-  user node[:cloudfoundry_common][:user]
-  cwd  File.join(node[:cloudfoundry_common][:vcap][:install_path], "cloud_controller")
-  code "#{File.join(ruby_path, "bundle")} install --without=test --local"
-  subscribes :run, resources(:git => node[:cloudfoundry_common][:vcap][:install_path])
-  action :nothing
+cloudfoundry_component "cloud_controller" do
+  pid_file node.cloudfoundry_cloud_controller.server.pid_file
 end
 
 bash "run cloudfoundry migrations" do
@@ -41,12 +28,6 @@ bash "run cloudfoundry migrations" do
   code "PATH='#{ruby_path}:$PATH' #{File.join(ruby_path, "bundle")} exec rake db:migrate RAILS_ENV=production CLOUD_CONTROLLER_CONFIG='#{config_file}'"
   subscribes :run, resources(:git => node[:cloudfoundry_common][:vcap][:install_path])
   action :nothing
-end
-
-template config_file do
-  source "config.yml.erb"
-  owner  node['cloudfoundry_common']['user']
-  mode   '0644'
 end
 
 # Write config files for each framework so that cloud_controller can
@@ -63,21 +44,9 @@ else
       variables(
         # ruby outputs the version without the '-'
         :ruby_1_9_2_version => node[:cloudfoundry_common][:ruby_1_9_2_version].sub('-', ''),
-        :ruby_1_9_2_path => ruby_path(node[:cloudfoundry_common][:ruby_1_9_2_version])
+        :ruby_1_9_2_path => File.join(ruby_path, "ruby")
       )
     end
   end
 end
 
-template File.join(node[:bluepill][:conf_dir], "cloud_controller.pill") do
-  source "cloud_controller.pill.erb"
-  variables(
-    :binary      => "#{File.join(ruby_path, "ruby")} #{cloud_controller_path}",
-    :pid_file    => node[:cloudfoundry_cloud_controller][:server][:pid_file],
-    :config_file => config_file
-  )
-end
-
-bluepill_service "cloud_controller" do
-  action [:enable, :load, :start]
-end

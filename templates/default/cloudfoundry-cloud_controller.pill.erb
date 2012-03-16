@@ -1,5 +1,5 @@
-Bluepill.application("cloud_controller") do |app|
-  app.process("cloud_controller") do |process|
+Bluepill.application("cloudfoundry-cloud_controller") do |app|
+  app.process("cloudfoundry-cloud_controller") do |process|
     process.start_command      = "<%= @binary %> -c <%= @config_file %>"
     process.pid_file           = "<%= @pid_file %>"
     process.start_grace_time   = 120.seconds
