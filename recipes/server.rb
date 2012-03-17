@@ -42,9 +42,8 @@ else
       owner  node[:cloudfoundry_common][:user]
       mode   "0644"
       variables(
-        # ruby outputs the version without the '-'
-        :ruby_1_9_2_version => node[:cloudfoundry_common][:ruby_1_9_2_version].sub('-', ''),
-        :ruby_1_9_2_path => File.join(ruby_path, "ruby")
+        :ruby_1_8_7_runtime => node[:cloudfoundry_dea][:runtimes][:ruby18],
+        :ruby_1_9_2_runtime => node[:cloudfoundry_dea][:runtimes][:ruby19]
       )
     end
   end

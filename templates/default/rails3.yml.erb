@@ -1,14 +1,26 @@
 ---
 name: "rails3"
 runtimes:
-  - "ruby19":
-      version: "<%= @ruby_1_9_2_version %>"
+<%- if @ruby_1_8_7_runtime %>
+  - "<%= @ruby_1_8_7_runtime[:name] %>":
+      version: "<%= @ruby_1_8_7_runtime[:version] %>"
       description: "Ruby 1.9.2"
-      executable: "<%= @ruby_1_9_2_path %>"
+      executable: "<%= @ruby_1_8_7_runtime[:executable] %>"
       environment:
        rails_env: "production"
        bundle_gemfile:
        rack_env: "production"
+<%- end %>
+<%- if @ruby_1_9_2_runtime %>
+  - "<%= @ruby_1_9_2_runtime[:name] %>":
+      version: "<%= @ruby_1_9_2_runtime[:version] %>"
+      description: "Ruby 1.9.2"
+      executable: "<%= @ruby_1_9_2_runtime[:executable] %>"
+      environment:
+       rails_env: "production"
+       bundle_gemfile:
+       rack_env: "production"
+<%- end %>
 app_servers:
   - "thin":
       description: "Thin"

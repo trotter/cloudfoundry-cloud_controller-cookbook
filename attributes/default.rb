@@ -59,14 +59,6 @@ default['cloudfoundry_cloud_controller']['database']['name'] = 'cloud_controller
 # Hostname where CloudController's database is located.
 default['cloudfoundry_cloud_controller']['database']['host'] = 'localhost'
 
-# An array of hashes containing the `name` and `version` for each
-# runtime available in your CloudFoundry instance.
-# XXX (trotter): Not sure we can store hashes in an attribute. Will have
-# to test this part thoroughly.
-default['cloudfoundry_cloud_controller']['server']['runtimes'] = [
-  { :name => "ruby19", :version => node[:cloudfoundry_common][:ruby_1_9_2_version] }
-]
-
 # An array containing the name of each framework supported by your
 # CloudFoundry instance. Due to a quirk in cloud_controller, you _must_
 # have rails3 and sinatra listed as frameworks.
