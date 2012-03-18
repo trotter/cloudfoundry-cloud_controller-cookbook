@@ -65,7 +65,8 @@ default['cloudfoundry_cloud_controller']['database']['host'] = 'localhost'
 default['cloudfoundry_cloud_controller']['server']['frameworks'] = [
   'platform',
   'rails3',
-  'sinatra'
+  'sinatra',
+  'spring'
 ]
 
 default['cloudfoundry_cloud_controller']['server']['services'] = [

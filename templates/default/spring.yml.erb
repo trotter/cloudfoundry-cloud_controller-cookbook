@@ -1,0 +1,20 @@
+---
+name: "spring"
+runtimes:
+  - "<%= @java_runtime[:name] %>":
+      description: "Java 6"
+      version: "<%= @java_runtime[:version] %>"
+      executable: "<%= @java_runtime[:executable] %>"
+      default: true
+app_servers:
+  - "tomcat":
+      description: "Tomcat"
+      executable: "false"
+      default: true
+detection:
+  - "*.war": true # TODO - this thinks everything with an XML file is Spring
+staged_services:
+  - "name": "mysql"
+    "version": "*"
+  - "name": "postgresql"
+    "version": "*"
