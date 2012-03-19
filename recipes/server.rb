@@ -36,17 +36,8 @@ if !node[:cloudfoundry_cloud_controller][:server][:frameworks] ||
     node[:cloudfoundry_cloud_controller][:server][:frameworks].empty?
   Chef::Log.info "No frameworks specified, skipping framework configs."
 else
-  node[:cloudfoundry_cloud_controller][:server][:frameworks].each do |framework|
-    template File.join(node[:cloudfoundry_common][:staging_manifests_dir], "#{framework}.yml") do
-      source "#{framework}.yml.erb"
-      owner  node[:cloudfoundry_common][:user]
-      mode   "0644"
-      variables(
-        :ruby_1_8_7_runtime => node[:cloudfoundry_dea][:runtimes][:ruby18],
-        :ruby_1_9_2_runtime => node[:cloudfoundry_dea][:runtimes][:ruby19],
-        :java_runtime       => node[:cloudfoundry_dea][:runtimes][:java]
-      )
-    end
+  node[:cloudfoundry_cloud_controller][:server][:frameworks].each do |_, framework|
+    include_recipe framework[:cookbook]
   end
 end
 

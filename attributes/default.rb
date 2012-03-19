@@ -62,12 +62,7 @@ default['cloudfoundry_cloud_controller']['database']['host'] = 'localhost'
 # An array containing the name of each framework supported by your
 # CloudFoundry instance. Due to a quirk in cloud_controller, you _must_
 # have rails3 and sinatra listed as frameworks.
-default['cloudfoundry_cloud_controller']['server']['frameworks'] = [
-  'platform',
-  'rails3',
-  'sinatra',
-  'spring'
-]
+default['cloudfoundry_cloud_controller']['server']['frameworks']['platform']['cookbook'] = "cloudfoundry-cloud_controller::platform"
 
 default['cloudfoundry_cloud_controller']['server']['services'] = [
   'mysql',
