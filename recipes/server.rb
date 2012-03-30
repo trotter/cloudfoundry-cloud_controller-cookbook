@@ -20,6 +20,7 @@ package "libsqlite3-dev"
 
 cloudfoundry_component "cloud_controller" do
   pid_file node.cloudfoundry_cloud_controller.server.pid_file
+  log_file node.cloudfoundry_cloud_controller.server.log_file
 end
 
 bash "run cloudfoundry migrations" do
