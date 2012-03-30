@@ -55,7 +55,7 @@ directories:
   tmpdir: <%= node[:cloudfoundry_common][:tmpdir] %>
 
 # NATS message bus URI
-mbus: nats://<%= node[:nats_server][:user] %>:<%= node[:nats_server][:password] %>@<%= node[:cloudfoundry_common][:nats_server][:host] %>:<%= node[:nats_server][:port] %>/
+mbus: nats://<%= node[:nats_server][:user] %>:<%= node[:nats_server][:password] %>@<%= node[:cloudfoundry_common][:nats_server][:host] %>:<%= node[:cloudfoundry_common][:nats_server][:port] %>/
 keys:
   password: 'password key goes here'
   token: 'token key goes here'
