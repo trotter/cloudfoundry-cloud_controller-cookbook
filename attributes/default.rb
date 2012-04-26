@@ -66,6 +66,7 @@ default['cloudfoundry_cloud_controller']['server']['frameworks']['platform']['co
 
 default['cloudfoundry_cloud_controller']['server']['services'] = [
   'mysql',
+  'mongodb',
   'postgresql'
 ]
 
